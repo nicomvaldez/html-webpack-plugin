@@ -38,7 +38,7 @@ class HtmlWebpackPlugin {
     // Default options
     /** @type {ProcessedHtmlWebpackOptions} */
     const defaultOptions = {
-      template: path.join(__dirname, 'default_index.ejs'),
+      template: path.join(__dirname, 'default.js'),
       templateContent: false,
       templateParameters: templateParametersGenerator,
       filename: 'index.html',
@@ -269,6 +269,11 @@ class HtmlWebpackPlugin {
             return getHtmlWebpackPluginHooks(compilation).afterTemplateExecution.promise(pluginArgs);
           })
           .then(({html, headTags, bodyTags}) => {
+            // FIXME
+            console.log('*******************************');
+            console.log(bodyTags);
+            console.log('*******************************');
+            console.log(html);
             return self.postProcessHtml(html, assets, {headTags, bodyTags});
           });
 
@@ -343,9 +348,10 @@ class HtmlWebpackPlugin {
     if (typeof newSource === 'object' && newSource.__esModule && newSource.default) {
       newSource = newSource.default;
     }
-    return typeof newSource === 'string' || typeof newSource === 'function'
-      ? Promise.resolve(newSource)
-      : Promise.reject(new Error('The loader "' + this.options.template + '" didn\'t return html.'));
+    // FIXME
+    console.log('new source');
+    console.log(newSource);
+    Promise.resolve(newSource);
   }
 
   /**
@@ -429,16 +435,18 @@ class HtmlWebpackPlugin {
    * @returns {Promise<string>}
    */
   postProcessHtml (html, assets, assetTags) {
-    if (typeof html !== 'string') {
-      return Promise.reject(new Error('Expected html to be a string but got ' + JSON.stringify(html)));
-    }
-    const htmlAfterInjection = this.options.inject
-      ? this.injectAssetsIntoHtml(html, assets, assetTags)
-      : html;
-    const htmlAfterMinification = this.options.minify
-      ? require('html-minifier').minify(htmlAfterInjection, this.options.minify)
-      : htmlAfterInjection;
-    return Promise.resolve(htmlAfterMinification);
+      // FIXME
+    // if (typeof html !== 'string') {
+    //   return Promise.reject(new Error('Expected html to be a string but got ' + JSON.stringify(html)));
+    // }
+    // const htmlAfterInjection = this.options.inject
+    //   ? this.injectAssetsIntoHtml(html, assets, assetTags)
+    //   : html;
+    // const htmlAfterMinification = this.options.minify
+    //   ? require('html-minifier').minify(htmlAfterInjection, this.options.minify)
+    //   : htmlAfterInjection;
+    // return Promise.resolve(htmlAfterMinification);
+    return Promise.resolve('');
   }
 
   /*
